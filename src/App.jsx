@@ -30,7 +30,7 @@ function App() {
         <input type="text" name='title' placeholder='Title..' onChange={handleChange}/>
         <button onClick={handleSubmit}>Add Password</button>
         <Toaster/>
-      </div>
+        </div>
     </div>
   )
 }
