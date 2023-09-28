@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import './App.css'
+import axios from 'axios'
+import toast,{Toaster} from 'react-hot-toast'
+export const url='http://localhost:8000'
 
 function App() {
   const [userDetails,setUserDetails]=useState({password:"",title:""})
@@ -10,15 +13,24 @@ function App() {
   }
 
   const handleSubmit=()=>{
-    console.log(userDetails);
+    axios.post(`${url}/passwords/addPassword`,userDetails)
+    .then((res)=>{
+      console.log(res.data);
+      toast.success('Password Added')
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
   }
+  
   return (
     <div className='App'>
-      <div className='AddingPassword'>
-        <input type='text' placeholder='Password...' name='password' onChange={handleChange}/>
-        <input type='text' placeholder='Title...' name='title' onChange={handleChange}/>
+      <div className="AddingPassword">
+        <input type="text" name='password' placeholder='Password...' onChange={handleChange}/>
+        <input type="text" name='title' placeholder='Title..' onChange={handleChange}/>
         <button onClick={handleSubmit}>Add Password</button>
-      </div>
+        <Toaster/>
+        </div>
     </div>
   )
 }
