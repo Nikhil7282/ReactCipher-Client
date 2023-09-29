@@ -1,42 +1,90 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+
+.App {
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ }
+ 
+ .AddingPassword {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     width: 60%;
+     height: 300px;
+     border-radius: 20px;
+     margin-top: 20px;
+ }
+ 
+ .AddingPassword button, input{
+     width: 300px;
+     height: 40px;
+     border: none;
+     border-radius: 7px;
+     margin: 10px;
+     padding-left: 15px;
+     font-size: 17px;
+ }
+ 
+ button {
+     cursor: pointer;
+ }
+ 
+ .Passwords {
+     width: 100%;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     margin-top: 20px;
+ }
+ 
+ .password {
+     width: 400px;
+     height: 70px;
+     background-color: black;
+     border-radius: 7px;
+     color: white;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     margin: 10px;
+     font-size: 20px;
+     font-family: Arial, Helvetica, sans-serif;
+     cursor: pointer;
+ }
+ .home-page {
+  height: 100vh;
+  width: 100%;
+}
+
+.background-image {
+  background-image: url('./assets//password.jpeg');
+  background-size: cover; /* This makes the image responsive */
+  background-position: center; /* This centers the image */
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.description {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.user-options {
+  display: flex;
+  justify-content: space-between;
+  width: 200px; /* Adjust as needed */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.login-button, .signup-button {
+  margin-top: 10px;
 }
