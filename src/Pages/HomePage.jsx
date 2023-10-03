@@ -1,7 +1,4 @@
 import React from 'react';
-// import Login from './Login';
-// import Signup from './Signup';
-// import './HomePage.css'; // Assuming you have a CSS file for styling
 
 const HomePage = () => {
   return (

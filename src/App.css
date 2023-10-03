@@ -144,3 +144,9 @@
      font-family: Arial, Helvetica, sans-serif;
      cursor: pointer;
  }
+
+ @media (max-width: 600px) {
+  .form-control {
+    width: 100%;
+  }
+}
