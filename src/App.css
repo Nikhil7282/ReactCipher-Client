@@ -6,7 +6,16 @@
   justify-content: center;
   align-items: center;
  }
- 
+
+ .spacer{
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url('./assets//layered-waves-haikei.svg');
+}
+
  .AddingPassword {
      display: flex;
      flex-direction: column;
