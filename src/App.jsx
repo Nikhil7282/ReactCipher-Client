@@ -5,8 +5,11 @@ import HomePage from './Pages/HomePage'
 import LoginPage from './Pages/LoginPage'
 import SignUpPage from './Pages/SignUpPage'
 import Navbar from './components/Navbar'
-export const url='http://localhost:8000'
+// import axios from 'axios'
 const linksArray=["login","SignUp","Home","Random"]
+export const  url="http://localhost:8000"
+// axios.defaults.baseURL='http://localhost:8000'
+
 function App() {
   return (
     <div className='App'>
