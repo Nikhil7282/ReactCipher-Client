@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { url } from "../App";
+import { client} from "../App";
 
 function SignUpPage() {
   const [userDetails, setUserDetails] = useState({
@@ -15,7 +14,7 @@ function SignUpPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log(userDetails);
-    axios.post(`${url}/users/signUp`,userDetails)
+    client.post(`/users/signUp`,userDetails)
     .then((res)=>{
         console.log(res.data);
     })

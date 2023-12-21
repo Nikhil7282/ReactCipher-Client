@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { url } from "../App";
-import axios from "axios";
+import { client} from "../App";
 import toast from "react-hot-toast";
 
 function AddPassword() {
@@ -11,9 +10,8 @@ function AddPassword() {
     const { name, value } = e.target;
     setUserDetails({ ...userDetails, [name]: value });
   };
-  const handleSubmit = () => {
-    axios
-      .post(`${url}/passwords/addPassword`, userDetails)
+  const handleSubmit = async() => {
+      await client.post(`/passwords/addPassword`, userDetails)
       .then((res) => {
         console.log(res.data);
         toast.success("Password Added");
@@ -23,8 +21,7 @@ function AddPassword() {
       });
   };
   useEffect(() => {
-    axios
-      .get(`${url}/passwords/getAllPasswords`)
+      client.get(`/passwords/getAllPasswords`)
       .then((res) => {
         console.log(res.data);
         setUserPasswords(res.data.data);
@@ -34,8 +31,8 @@ function AddPassword() {
       });
   }, []);
 
-  const decrypt = (encryption) => {
-    axios.post(`${url}/passwords/decryptPassword`, {
+  const decrypt = async(encryption) => {
+    await client.post(`/passwords/decryptPassword`, {
       password: encryption.password,
       iv: encryption.iv,
     })

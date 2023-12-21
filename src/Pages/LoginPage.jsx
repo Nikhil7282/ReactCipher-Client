@@ -1,19 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { client } from "../App";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loggedIn } from "../state/User/loginSlice";
 
 const LoginPage = () => {
-  const [userDetails, setUserDetails] = useState({
-    username: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserDetails({ ...userDetails, [name]: value });
-  };
+  const {username,isLoggedIn}=useSelector((state)=>state)
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
+  useEffect(()=>{
+    if(isLoggedIn){
+      navigate('/addPassword')
+    }
+  })
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userDetails);
+    const formData=new FormData(e.currentTarget)
+    const username=formData.get("username")
+    const password=formData.get("password")
+    client.post('/users/login',{username,password})
+    .then((res)=>{
+      dispatch(loggedIn(),username)
+      console.log(res.data);
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
   };
   return (
     <Box
@@ -36,14 +49,14 @@ const LoginPage = () => {
       >
         <Typography variant="h5">Login</Typography>
         <TextField
-        onChange={()=>{handleChange}}
+        name="username"
           type="text"
           label="Username"
           variant="outlined"
           sx={{ m: "20px" }}
         />
         <TextField
-        onChange={()=>{handleChange}}
+        name="password"
           type="password"
           label="Password"
           variant="outlined"
