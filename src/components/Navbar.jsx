@@ -17,27 +17,31 @@ const Navbar = ({ links }) => {
   const theme = useTheme();
   // console.log(theme);
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(null);
   return (
     <AppBar
       sx={{
-background: "linear-gradient(135deg, rgba(0,0,0,1) 18%, rgba(3,152,252,1) 100%)",
+        background:
+          "linear-gradient(135deg, rgba(0,0,0,1) 18%, rgba(3,152,252,1) 100%)",
       }}
     >
       <Toolbar>
         {isMatch ? (
           <>
-          <Typography>
-                <LockPersonIcon />
-              </Typography>
-            <DrawerComp links={links}/>
+            <Typography>
+              <LockPersonIcon />
+            </Typography>
+            <DrawerComp links={links} />
           </>
         ) : (
           <Grid sx={{ placeItems: "center" }} container spacing={1}>
             <Grid item xs={2}>
-              <Typography sx={{display:"flex", alignItems:"center"}} variant="Button text">
-                <LockPersonIcon sx={{marginRight:2}}/>
-                Quantum Lock
+              <Typography
+                sx={{ display: "flex", alignItems: "center" }}
+                variant="Button text"
+              >
+                <LockPersonIcon sx={{ marginRight: 2 }} />
+                ReactCipher
               </Typography>
             </Grid>
             <Grid item xs={6}>

@@ -32,6 +32,7 @@ function AddPassword() {
   }, []);
 
   const decrypt = async(encryption) => {
+    console.log(encryption);
     await client.post(`/passwords/decryptPassword`, {
       password: encryption.password,
       iv: encryption.iv,
