@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import AnimatedLetters from "../components/animattedLetters/AnimatedLetters";
-import { authContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const HomePage = () => {
-  const { user, isLoggedIn } = useContext(authContext);
+  const { user, isLoggedIn } = useAuth;
   const navigate = useNavigate();
   // console.log(user);
   const letterArray = [

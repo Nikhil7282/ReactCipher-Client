@@ -13,8 +13,13 @@ import {
 import React, { useState } from "react";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import DrawerComp from "./DrawerComp";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 const Navbar = ({ links }) => {
   const theme = useTheme();
+  const auth = useAuth();
+  const navigate = useNavigate();
+  // console.log(auth);
   // console.log(theme);
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   const [value, setValue] = useState(null);
@@ -31,7 +36,16 @@ const Navbar = ({ links }) => {
             <Typography>
               <LockPersonIcon />
             </Typography>
-            <DrawerComp links={links} />
+            <DrawerComp
+              links={
+                auth.isLoggedIn
+                  ? links
+                  : [
+                      { label: "Login", goto: "/login" },
+                      { label: "Signup", goto: "/login" },
+                    ]
+              }
+            />
           </>
         ) : (
           <Grid sx={{ placeItems: "center" }} container spacing={1}>
@@ -53,26 +67,42 @@ const Navbar = ({ links }) => {
                   setValue(val);
                 }}
               >
-                {links.map((link) => {
-                  return <Tab label={link} key={link} />;
-                })}
+                {auth.isLoggedIn &&
+                  links.map((link) => {
+                    return (
+                      <Tab
+                        label={link.label}
+                        key={link.label}
+                        onClick={() => navigate(link.goto)}
+                      />
+                    );
+                  })}
               </Tabs>
             </Grid>
             <Grid item xs={1}></Grid>
             <Grid item xs={3}>
               <Box>
-                <Button
-                  sx={{ marginLeft: "auto", background: "rgba(0,0,0,1) 18%," }}
-                  variant="contained"
-                >
-                  Login
-                </Button>
-                <Button
-                  sx={{ marginLeft: 2, background: "rgba(0,0,0,1) 18%," }}
-                  variant="contained"
-                >
-                  SignUp
-                </Button>
+                {!auth.isLoggedIn && (
+                  <>
+                    <Button
+                      sx={{
+                        marginLeft: "auto",
+                        background: "rgba(0,0,0,1) 18%,",
+                      }}
+                      variant="contained"
+                      onClick={() => navigate("/login")}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      sx={{ marginLeft: 2, background: "rgba(0,0,0,1) 18%," }}
+                      variant="contained"
+                      onClick={() => navigate("/login")}
+                    >
+                      SignUp
+                    </Button>
+                  </>
+                )}
               </Box>
             </Grid>
           </Grid>

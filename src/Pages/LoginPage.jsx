@@ -1,16 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { client } from "../App";
 import { useNavigate } from "react-router-dom";
-import { authContext } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
-
-  const handleLoginSubmit = (e) => {
+  const auth = useAuth();
+  useEffect(() => {
+    if (auth.isLoggedIn) {
+      navigate("/addPassword");
+    }
+  }, [auth]);
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username");
@@ -19,6 +24,7 @@ const LoginPage = () => {
       .post("/users/login", { username, password })
       .then((res) => {
         if (res.status === 200) {
+          auth.login(res.data.name, res.data.email);
           navigate("/addPassword");
         }
       })
