@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { client} from "../App";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { client } from "../App";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function AddPassword() {
   const [userDetails, setUserDetails] = useState({ password: "", title: "" });
   const [userPasswords, setUserPasswords] = useState([]);
-
+  const auth = useAuth();
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserDetails({ ...userDetails, [name]: value });
   };
-  const handleSubmit = async() => {
-      await client.post(`/passwords/addPassword`, userDetails)
+  const handleSubmit = async () => {
+    await client
+      .post(`/passwords/addPassword`, userDetails)
       .then((res) => {
         console.log(res.data);
         toast.success("Password Added");
@@ -20,31 +24,47 @@ function AddPassword() {
         console.log(error);
       });
   };
+  useLayoutEffect(() => {
+    console.log(auth);
+    if (auth.isLoggedIn && auth.user) {
+      client
+        .get(`/passwords/getAllPasswords`)
+        .then((res) => {
+          console.log(res.data);
+          setUserPasswords(res.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [auth]);
+
   useEffect(() => {
-      client.get(`/passwords/getAllPasswords`)
+    if (!auth.isLoggedIn) {
+      navigate("/login");
+    }
+  }, [auth]);
+
+  const decrypt = async (encryption) => {
+    console.log(encryption);
+    await client
+      .post(`/passwords/decryptPassword`, {
+        password: encryption.password,
+        iv: encryption.iv,
+      })
       .then((res) => {
-        console.log(res.data);
-        setUserPasswords(res.data.data);
+        // console.log(res.data.data);
+        setUserPasswords(
+          userPasswords.map((val) => {
+            return val.id === encryption.id
+              ? { ...encryption, title: res.data.data }
+              : val;
+          })
+        );
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
-  const decrypt = async(encryption) => {
-    await client.post(`/passwords/decryptPassword`, {
-      password: encryption.password,
-      iv: encryption.iv,
-    })
-    .then((res)=>{
-      // console.log(res.data.data);
-      setUserPasswords(userPasswords.map((val)=>{
-        return val.id===encryption.id ?{...encryption,title:res.data.data}:val
-      }))
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
   };
   return (
     <>
@@ -66,7 +86,13 @@ function AddPassword() {
       <div className="Passwords">
         {userPasswords.map((val, idx) => {
           return (
-            <div className="password" key={idx} onClick={()=>{decrypt(val)}}>
+            <div
+              className="password"
+              key={idx}
+              onClick={() => {
+                decrypt(val);
+              }}
+            >
               <h3>{val.title}</h3>
             </div>
           );

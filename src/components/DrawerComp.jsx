@@ -1,12 +1,21 @@
-import { Drawer, IconButton, List,ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Drawer,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import React, { useState } from "react";
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-const DrawerComp = ({links}) => {
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { useNavigate } from "react-router-dom";
+const DrawerComp = ({ links }) => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     <>
       <Drawer
-      PaperProps={{sx:{backgroundColor:"#07629f"}}}
+        PaperProps={{ sx: { backgroundColor: "#07629f" } }}
         open={open}
         onClose={() => {
           setOpen(false);
@@ -14,19 +23,33 @@ const DrawerComp = ({links}) => {
         anchor="left"
       >
         <List>
-            {links.map((link)=>{
-                return <ListItemButton  onClick={()=>setOpen(false)} key={link} divider>
+          {links.map((link) => {
+            return (
+              <ListItemButton
+                onClick={() => setOpen(false)}
+                key={link.label}
+                divider
+              >
                 <ListItemIcon>
-                    <ListItemText sx={{color:"white"}}>
-                        {link}
-                    </ListItemText>
+                  <ListItemText
+                    sx={{ color: "white" }}
+                    onClick={() => navigate(link.goto)}
+                  >
+                    {link.label}
+                  </ListItemText>
                 </ListItemIcon>
-            </ListItemButton>
-            })}
+              </ListItemButton>
+            );
+          })}
         </List>
       </Drawer>
-      <IconButton sx={{color:"white",marginLeft:"auto"}} onClick={()=>{setOpen(!open)}}>
-        <MenuOpenIcon/>
+      <IconButton
+        sx={{ color: "white", marginLeft: "auto" }}
+        onClick={() => {
+          setOpen(!open);
+        }}
+      >
+        <MenuOpenIcon />
       </IconButton>
     </>
   );

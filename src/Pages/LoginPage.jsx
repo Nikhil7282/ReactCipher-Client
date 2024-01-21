@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import LoginIcon from '@mui/icons-material/Login';
-import HowToRegIcon from '@mui/icons-material/HowToReg'
+import LoginIcon from "@mui/icons-material/Login";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { client } from "../App";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
-
-  const handleLoginSubmit = (e) => {
+  const auth = useAuth();
+  useEffect(() => {
+    if (auth.isLoggedIn) {
+      navigate("/addPassword");
+    }
+  }, [auth]);
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username");
@@ -15,7 +23,10 @@ const LoginPage = () => {
     client
       .post("/users/login", { username, password })
       .then((res) => {
-        console.log(res.data);
+        if (res.status === 200) {
+          auth.login(res.data.name, res.data.email);
+          navigate("/addPassword");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -26,18 +37,19 @@ const LoginPage = () => {
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username");
     const password = formData.get("password");
-    const email=formData.get("email")
-    client.post(`/users/signUp`,{username,email,password})
-    .then((res)=>{
+    const email = formData.get("email");
+    client
+      .post(`/users/signUp`, { username, email, password })
+      .then((res) => {
         console.log(res.data);
-    })
-    .catch((Error)=>{
+      })
+      .catch((Error) => {
         console.log(Error);
-    })
+      });
   };
   return (
     <form
-      onSubmit={isSignUp?handleSignUpSubmit:handleLoginSubmit}
+      onSubmit={isSignUp ? handleSignUpSubmit : handleLoginSubmit}
       style={{
         width: "100%",
         display: "flex",
@@ -52,7 +64,7 @@ const LoginPage = () => {
         alignItems={"center"}
         justifyContent={"center"}
         margin={"auto"}
-        marginTop={isSignUp?"20px":"90px"}
+        marginTop={isSignUp ? "20px" : "90px"}
         padding={3}
         borderRadius={5}
         boxShadow={"5px 5px 10px #ccc"}
@@ -63,7 +75,7 @@ const LoginPage = () => {
         }}
       >
         <Typography variant="h2" padding={3} textAlign={"center"}>
-        {isSignUp ?"SignUp":"Login"}
+          {isSignUp ? "SignUp" : "Login"}
         </Typography>
         <TextField
           // placeholder="Username"
@@ -95,22 +107,22 @@ const LoginPage = () => {
           margin="normal"
         />
         <Button
-        endIcon={isSignUp?<HowToRegIcon/>:<LoginIcon/>}
+          endIcon={isSignUp ? <HowToRegIcon /> : <LoginIcon />}
           variant="contained"
           disableElevation
           type="submit"
           sx={{ marginTop: 3, borderRadius: 3 }}
         >
-        {isSignUp ?"SignUp":"Login"}
+          {isSignUp ? "SignUp" : "Login"}
         </Button>
         <Button
-        endIcon={isSignUp?<LoginIcon/>:<HowToRegIcon/>}
+          endIcon={isSignUp ? <LoginIcon /> : <HowToRegIcon />}
           sx={{ marginTop: 3, borderRadius: 3 }}
           onClick={() => {
             setIsSignUp(!isSignUp);
           }}
         >
-          Go To{isSignUp?" Login":" SIGNUP"}
+          Go To{isSignUp ? " Login" : " SIGNUP"}
         </Button>
       </Box>
     </form>
