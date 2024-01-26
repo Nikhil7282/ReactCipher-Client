@@ -25,10 +25,17 @@ function AddPassword() {
       });
   };
   useLayoutEffect(() => {
-    console.log(auth);
+    if (!auth.isLoggedIn) {
+      navigate("/login");
+    } else {
+      localStorage.setItem("username", auth?.user?.name);
+    }
+  }, [auth]);
+
+  useEffect(() => {
     if (auth.isLoggedIn && auth.user) {
       client
-        .get(`/passwords/getAllPasswords`)
+        .get(`/passwords/userPasswords`)
         .then((res) => {
           console.log(res.data);
           setUserPasswords(res.data.data);
@@ -36,12 +43,6 @@ function AddPassword() {
         .catch((error) => {
           console.log(error);
         });
-    }
-  }, [auth]);
-
-  useEffect(() => {
-    if (!auth.isLoggedIn) {
-      navigate("/login");
     }
   }, [auth]);
 
