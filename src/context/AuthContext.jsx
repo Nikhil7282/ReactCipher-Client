@@ -30,7 +30,15 @@ export const AuthProvider = ({ children }) => {
     setUser({ ...user, name: name, email: email });
     setIsLoggedIn(true);
   };
-  const logout = async () => {};
+  const logout = async () => {
+    client.get("/user/userLogout").then((res) => {
+      if (res.status === 201) {
+        setIsLoggedIn(false);
+        setUser({ name: "", email: "" });
+        window.location.reload();
+      }
+    });
+  };
   const value = { user, login, isLoggedIn, logout };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

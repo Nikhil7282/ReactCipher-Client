@@ -23,6 +23,13 @@ const Navbar = ({ links }) => {
   // console.log(theme);
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   const [value, setValue] = useState(null);
+
+  const handleClick = (goto) => {
+    if (goto === "/login") {
+      auth.logout();
+    }
+    navigate(goto);
+  };
   return (
     <AppBar
       sx={{
@@ -73,7 +80,7 @@ const Navbar = ({ links }) => {
                       <Tab
                         label={link.label}
                         key={link.label}
-                        onClick={() => navigate(link.goto)}
+                        onClick={() => handleClick(link.goto)}
                       />
                     );
                   })}
