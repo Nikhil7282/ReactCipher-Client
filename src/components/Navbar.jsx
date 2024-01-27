@@ -24,9 +24,11 @@ const Navbar = ({ links }) => {
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   const [value, setValue] = useState(null);
 
-  const handleClick = (goto) => {
+  const handleClick = async (goto) => {
+    // console.log(goto);
     if (goto === "/login") {
-      auth.logout();
+      // console.log("logout");
+      await auth.logout();
     }
     navigate(goto);
   };
@@ -74,7 +76,7 @@ const Navbar = ({ links }) => {
                   setValue(val);
                 }}
               >
-                {auth.isLoggedIn &&
+                {auth?.isLoggedIn &&
                   links.map((link) => {
                     return (
                       <Tab
@@ -89,7 +91,7 @@ const Navbar = ({ links }) => {
             <Grid item xs={1}></Grid>
             <Grid item xs={3}>
               <Box>
-                {!auth.isLoggedIn && (
+                {!auth?.isLoggedIn && (
                   <>
                     <Button
                       sx={{

@@ -10,11 +10,13 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
   const auth = useAuth();
+
   useEffect(() => {
-    if (auth.isLoggedIn) {
+    if (auth.isLoggedIn && auth.user) {
       navigate("/addPassword");
     }
   }, [auth]);
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -24,7 +26,8 @@ const LoginPage = () => {
       .post("/users/login", { username, password })
       .then((res) => {
         if (res.status === 200) {
-          auth.login(res.data.name, res.data.email);
+          auth.login(res.data.user);
+          sessionStorage.setItem("access_token", res.data.accessToken);
           navigate("/addPassword");
         }
       })
@@ -32,12 +35,16 @@ const LoginPage = () => {
         console.log(err);
       });
   };
+
   const handleSignUpSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username");
     const password = formData.get("password");
     const email = formData.get("email");
+    if (username === "" || password === "" || email === "") {
+      return alert("Fill all Details");
+    }
     client
       .post(`/users/signUp`, { username, email, password })
       .then((res) => {
@@ -47,6 +54,7 @@ const LoginPage = () => {
         console.log(Error);
       });
   };
+
   return (
     <form
       onSubmit={isSignUp ? handleSignUpSubmit : handleLoginSubmit}
@@ -85,6 +93,7 @@ const LoginPage = () => {
           variant="outlined"
           sx={{ m: "20px" }}
           margin="normal"
+          required
         />
         {isSignUp && (
           <TextField
@@ -95,6 +104,7 @@ const LoginPage = () => {
             variant="outlined"
             sx={{ m: "20px" }}
             margin="normal"
+            required
           />
         )}
         <TextField
@@ -105,6 +115,7 @@ const LoginPage = () => {
           variant="outlined"
           sx={{ m: "20px" }}
           margin="normal"
+          required
         />
         <Button
           endIcon={isSignUp ? <HowToRegIcon /> : <LoginIcon />}

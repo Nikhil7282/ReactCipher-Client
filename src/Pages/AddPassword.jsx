@@ -25,24 +25,29 @@ function AddPassword() {
       });
   };
   useLayoutEffect(() => {
-    if (!auth.isLoggedIn) {
-      navigate("/login");
-    } else {
-      localStorage.setItem("username", auth?.user?.name);
-    }
-  }, [auth]);
-
-  useEffect(() => {
-    if (auth.isLoggedIn && auth.user) {
+    if (auth?.isLoggedIn && auth?.user) {
+      client.defaults.headers.common["Authorization"] =
+        "Bearer " + sessionStorage.getItem("access_token");
       client
         .get(`/passwords/userPasswords`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           setUserPasswords(res.data.data);
         })
         .catch((error) => {
           console.log(error);
         });
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    // console.log(auth);
+    if (!auth.isLoggedIn || !auth.user) {
+      navigate("/login");
+    } else {
+      localStorage.setItem("username", auth?.user?.username);
+      localStorage.setItem("userId", auth?.user?.userId);
+      localStorage.setItem("email", auth?.user?.email);
     }
   }, [auth]);
 

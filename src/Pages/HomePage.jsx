@@ -68,11 +68,6 @@ const HomePage = () => {
     "t",
     "y",
   ];
-  useEffect(() => {
-    if (user && isLoggedIn) {
-      navigate("/addPassword");
-    }
-  }, []);
   return (
     <div className="home-page">
       <div
