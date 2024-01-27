@@ -4,37 +4,35 @@ import { client } from "../App";
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({ name: "", email: "" });
+  const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     client
-      .get("/users/verifyUser")
+      .get("/users/refreshToken")
       .then((res) => {
         if (res.status === 200) {
-          setIsLoggedIn(true);
           setUser(res.data.user);
-        } else if (res.status === 401) {
-          setIsLoggedIn(false);
-          setUser({ name: "", email: "" });
+          setIsLoggedIn(true);
+          sessionStorage.setItem("access_token", res.data.accessToken);
         }
       })
-      .catch((error) => {
-        setIsLoggedIn(false);
-        setUser({ name: "", email: "" });
-        console.log(error);
-      });
+      .catch((err) => console.log(err));
   }, []);
 
-  const login = async (name, email) => {
-    setUser({ ...user, name: name, email: email });
+  const login = async (userObj) => {
+    setUser(userObj);
     setIsLoggedIn(true);
   };
+
   const logout = async () => {
-    client.get("/user/userLogout").then((res) => {
-      if (res.status === 201) {
+    client.defaults.headers.common["Authorization"] =
+      "Bearer " + sessionStorage.getItem("access_token");
+    client.post("/users/logout").then((res) => {
+      if (res.status === 200) {
         setIsLoggedIn(false);
-        setUser({ name: "", email: "" });
+        setUser(null);
+        sessionStorage.removeItem("access_token");
         window.location.reload();
       }
     });

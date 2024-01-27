@@ -9,9 +9,18 @@ import {
 import React, { useState } from "react";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 const DrawerComp = ({ links }) => {
+  const auth = useAuth();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const handleClick = async (goto) => {
+    console.log(goto);
+    if (goto === "/login") {
+      await auth.logout();
+    }
+    navigate(goto);
+  };
   return (
     <>
       <Drawer
@@ -33,7 +42,7 @@ const DrawerComp = ({ links }) => {
                 <ListItemIcon>
                   <ListItemText
                     sx={{ color: "white" }}
-                    onClick={() => navigate(link.goto)}
+                    onClick={() => handleClick(link.goto)}
                   >
                     {link.label}
                   </ListItemText>
