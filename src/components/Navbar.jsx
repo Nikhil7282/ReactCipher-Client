@@ -47,7 +47,7 @@ const Navbar = ({ links }) => {
             </Typography>
             <DrawerComp
               links={
-                auth.isLoggedIn
+                auth?.isLoggedIn
                   ? links
                   : [
                       { label: "Login", goto: "/login" },
