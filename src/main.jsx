@@ -7,7 +7,13 @@ import "./index.css";
 import { ThemeProvider, createTheme, responsiveFontSizes } from "@mui/material";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
-let theme = createTheme();
+let theme = createTheme({
+  palette: {
+    info: {
+      main: "#616161",
+    },
+  },
+});
 theme = responsiveFontSizes(theme);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

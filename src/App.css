@@ -1,75 +1,82 @@
-
 .App {
   margin: 0px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
- }
+}
 
- .spacer{
+.spacer {
   width: 100vw;
   height: 100vh;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-image: url('./assets//layered-waves-haikei.svg');
+  background-image: url("./assets//layered-waves-haikei.svg");
 }
 
- .AddingPassword {
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     align-items: center;
-     width: 60%;
-     height: 300px;
-     border-radius: 20px;
-     margin-top: 20px;
- }
- 
- .AddingPassword >button, input{
-     width: 300px;
-     height: 40px;
-     border: none;
-     border-radius: 7px;
-     margin: 10px;
-     padding-left: 15px;
-     font-size: 17px;
- }
- 
- button {
-     cursor: pointer;
- }
- 
- .Passwords {
-     width: 100%;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     margin-top: 20px;
- }
- 
- .password {
-     width: 400px;
-     height: 70px;
-     background-color: black;
-     border-radius: 7px;
-     color: white;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     margin: 10px;
-     font-size: 20px;
-     font-family: Arial, Helvetica, sans-serif;
-     cursor: pointer;
- }
- .home-page {
+.addPasswordContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+}
+
+.AddingPassword {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  height: 300px;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+
+.AddingPassword > button,
+input {
+  width: 300px;
+  height: 40px;
+  border: none;
+  border-radius: 7px;
+  margin: 10px;
+  padding-left: 15px;
+  font-size: 17px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.Passwords {
+  width: 50%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* align-items: center; */
+  margin-top: 20px;
+}
+
+.password {
+  width: 400px;
+  height: 70px;
+  background-color: black;
+  border-radius: 7px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+.home-page {
   height: 100vh;
   width: 100%;
 }
 
 .background-image {
-  background-image: url('./assets//password.jpeg');
+  background-image: url("./assets//password.jpeg");
   background-size: cover; /* This makes the image responsive */
   background-position: center; /* This centers the image */
   height: 100%;
@@ -94,7 +101,8 @@
   width: 200px; /* Adjust as needed */
 }
 
-.login-button, .signup-button {
+.login-button,
+.signup-button {
   margin-top: 10px;
 }
 
@@ -103,58 +111,59 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
- }
- 
- .AddingPassword {
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     align-items: center;
-     /* background-color: lightblue; */
-     width: 60%;
-     height: 300px;
-     border-radius: 20px;
-     margin-top: 20px;
- }
- 
- .AddingPassword >button, input{
-     width: 300px;
-     height: 40px;
-     border: none;
-     border-radius: 7px;
-     margin: 10px;
-     padding-left: 15px;
-     font-size: 17px;
- }
- 
- button {
-     cursor: pointer;
- }
- 
- .Passwords {
-     width: 100%;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     margin-top: 20px;
- }
- 
- .password {
-     width: 400px;
-     height: 70px;
-     background-color: black;
-     border-radius: 7px;
-     color: white;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     margin: 10px;
-     font-size: 20px;
-     font-family: Arial, Helvetica, sans-serif;
-     cursor: pointer;
- }
+}
 
- @media (max-width: 600px) {
+.AddingPassword {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background-color: lightblue; */
+  width: 60%;
+  height: 300px;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+
+.AddingPassword > button,
+input {
+  width: 300px;
+  height: 40px;
+  border: none;
+  border-radius: 7px;
+  margin: 10px;
+  padding-left: 15px;
+  font-size: 17px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.Passwords {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.password {
+  width: 400px;
+  height: 70px;
+  background-color: black;
+  border-radius: 7px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
   .form-control {
     width: 100%;
   }
