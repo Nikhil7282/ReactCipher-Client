@@ -1,8 +1,8 @@
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Box, Button } from "@mui/material";
 import { client } from "../App";
+import toast from "react-hot-toast";
 function PasswordSlot({ password, userPasswords, setUserPasswords }) {
   const decrypt = async (encryption) => {
     await client
@@ -24,14 +24,34 @@ function PasswordSlot({ password, userPasswords, setUserPasswords }) {
         console.log(error);
       });
   };
+
+  const deletePassword = async (id) => {
+    // console.log(id);
+    client.defaults.headers.common["Authorization"] =
+      "Bearer " + sessionStorage.getItem("access_token");
+    client
+      .delete("/passwords/deletePassword", {
+        data: {
+          passwordId: id,
+        },
+      })
+      .then((res) => {
+        setUserPasswords(userPasswords.filter((pass) => pass.id !== id));
+        toast.success(res.data.msg);
+      })
+      .catch((err) => {
+        // console.log(err);
+        toast.error(err.data.msg);
+      });
+  };
+
   return (
     <Box
-      key={password.id}
       sx={{
         borderRadius: "7px",
         backgroundColor: "black",
         color: "white",
-        width: "400px",
+        // width: "400px",
         height: "70px",
         cursor: "pointer",
         display: "flex",
@@ -48,12 +68,9 @@ function PasswordSlot({ password, userPasswords, setUserPasswords }) {
       >
         {password.title}
       </h3>
-      {/* <Button>
-        <ContentCopyIcon />
-      </Button>
-      <Button>
+      <Button onClick={() => deletePassword(password.id)}>
         <DeleteIcon />
-      </Button> */}
+      </Button>
     </Box>
   );
 }
