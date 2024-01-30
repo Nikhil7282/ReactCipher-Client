@@ -11,28 +11,35 @@ function AddPassword() {
   const [userPasswords, setUserPasswords] = useState([]);
   const auth = useAuth();
   const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserDetails({ ...userDetails, [name]: value });
   };
+
   const handleSubmit = async () => {
     if (userDetails.password === "" || userDetails.title === "") {
       return toast.error(`You must provide a password and a title`);
     }
+    toast.loading("Adding Password", { id: "add" });
     await client
       .post(`/passwords/addPassword`, userDetails)
       .then((res) => {
         // console.log(res.data);
         setUserPasswords([
           ...userPasswords,
-          { title: userDetails.title, initPassword: userDetails.password },
+          res.data.data,
+          // { title: userDetails.title, initPassword: userDetails.password },
         ]);
-        toast.success("Password Added");
+        setUserDetails({ password: "", title: "" });
+        toast.success("Password Added", { id: "add" });
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Error in adding password", { id: "add" });
       });
   };
+
   useLayoutEffect(() => {
     if (auth?.isLoggedIn && auth?.user) {
       client.defaults.headers.common["Authorization"] =
@@ -80,6 +87,7 @@ function AddPassword() {
           }}
         >
           <TextField
+            value={userDetails.password}
             sx={{ margin: "10px" }}
             name="password"
             type="text"
@@ -89,6 +97,7 @@ function AddPassword() {
             onChange={handleChange}
           />
           <TextField
+            value={userDetails.title}
             sx={{ margin: "10px" }}
             name="title"
             type="text"
@@ -110,18 +119,30 @@ function AddPassword() {
       </Grid>
       <Grid item xs={12} sm={6}>
         <Box>
-          <div className="Passwords">
-            {userPasswords.map((val) => {
-              return (
-                <PasswordSlot
-                  key={val.id}
-                  password={val}
-                  userPasswords={userPasswords}
-                  setUserPasswords={setUserPasswords}
-                />
-              );
-            })}
-          </div>
+          <Grid
+            // className="Passwords"
+            container
+            // sx={{ border: "1px solid black" }}
+          >
+            {userPasswords.length === 0 ? (
+              <Box>
+                <h3>No Passwords Yet</h3>
+              </Box>
+            ) : (
+              userPasswords.map((val) => {
+                return (
+                  <Grid item sm={12} md={6} xs={12}>
+                    <PasswordSlot
+                      key={val.id}
+                      password={val}
+                      userPasswords={userPasswords}
+                      setUserPasswords={setUserPasswords}
+                    />
+                  </Grid>
+                );
+              })
+            )}
+          </Grid>
         </Box>
       </Grid>
     </Grid>
